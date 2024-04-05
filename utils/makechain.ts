@@ -22,7 +22,7 @@ Question: {question}
 =========
 {context}
 =========
-Answer in Markdown:`,
+Answer in Markdown:`
 );
 
 export const makeChain = (

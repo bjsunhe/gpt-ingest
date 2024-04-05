@@ -15,14 +15,14 @@ const markdownDirectoryPath = 'Notion_DB';
 export const run = async () => {
   try {
     /*load raw docs from the all files in the directory */
-    // const directoryLoader = new DirectoryLoader(filePath, {
-    //   '.pdf': (path) => new CustomPDFLoader(path),
-    // });
+    const directoryLoader = new DirectoryLoader(filePath, {
+      '.pdf': (path) => new CustomPDFLoader(path),
+    });
 
 
     
     // const loader = new PDFLoader(filePath);
-    // const rawDocs = await directoryLoader.load();
+    const rawDocs = await directoryLoader.load();
 
     const rawMarkdownDocs = await processMarkDownFiles(markdownDirectoryPath);
 
@@ -36,11 +36,12 @@ export const run = async () => {
     // const docs = await textSplitter.splitDocuments(rawDocs);
     // console.log('split docs', docs);
 
-    const markdownDocs=await textSplitter.splitDocuments(rawMarkdownDocs);
-
+    // const markdownDocs=await textSplitter.splitDocuments(rawMarkdownDocs);
+    const markdownDocs=await textSplitter.splitDocuments(rawDocs);
+    
     console.log('creating vector store...');
     /*create and store the embeddings in the vectorStore*/
-    const embeddings = new OpenAIEmbeddings();
+    const embeddings = new OpenAIEmbeddings({modelName: "text-embedding-3-large"});
     const index = pinecone.Index(PINECONE_INDEX_NAME); //change to your own index name
 
     //embed the PDF documents
